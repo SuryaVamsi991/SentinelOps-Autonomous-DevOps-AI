@@ -3,26 +3,23 @@
 > **Autonomous DevOps AI Co-Pilot**  
 > Developed by **Arsh Verma** — Engineering Decision Intelligence
 
-[![DevDash 2026 Component](https://img.shields.io/badge/DevDash--2026-Project-blueviolet?style=for-the-badge)](https://devpost.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Status: Production Ready](https://img.shields.io/badge/Status-Production--Ready-emerald?style=for-the-badge)](#)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110-green.svg)](https://fastapi.tiangolo.com/)
 
 SentinelOps is a proactive CI/CD monitoring and self-healing platform that leverages **Machine Learning** to predict build failures and **Generative AI** to automate root-cause analysis. Designed for high-frequency engineering teams, it eliminates the "fail-react" loop by providing predictive intelligence at the Pull Request gate.
 
 ---
 
-## 💎 Evaluation Highlights
+## 🚀 Key Capabilities
 
-| Criterion           | Implementation                                                     |
-| :------------------ | :----------------------------------------------------------------- |
-| **Originality**     | Proactive "Pre-Merge" risk scoring and self-healing sandboxes.     |
-| **Technical Depth** | FastAPI Async, ML (Logistic Regression), Redis/Celery, Next.js 14. |
-| **Applicability**   | Reduces DevOps MTTR (Mean Time to Recovery) by ~60%.               |
-| **UX/UI**           | Premium Monochrome "Elite" Design with real-time feedback.         |
-| **Scalability**     | Cloud-native Docker architecture with worker-based heavy lifting.  |
-
-[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110-green.svg)](https://fastapi.tiangolo.com/)
+- **🔮 Predictive Risk Scoring**: ML-based auditing of PRs before merge using a custom Logistic Regression model.
+- **🧠 Automated Root Cause**: LLM-powered log analysis provides natural language explanations and patch suggestions.
+- **🔍 Similarity Search**: Uses SentenceTransformers to match new failures against historical incident patterns.
+- **⚡ Self-Healing Sandbox**: Simulates AI-suggested fixes in a containerized environment to verify outcomes.
+- **📊 Engineering Analytics**: Real-time visibility into MTTR, deployment stability, and pipeline health.
 
 ---
 
@@ -179,73 +176,23 @@ sentinelops/
 
 ---
 
-## 🎬 Demo Script (Follow This for Video)
+## 👥 Author
 
-**Narrative: "Last month, our CI failed 17 times, costing 12 engineering hours. With SentinelOps, this is what that would look like."**
-
-1. **Open Dashboard** → Show live metrics: 87% success rate, 3 open incidents, risk heatmap
-2. **Navigate to PR Gatekeeper** → Show the "Migrate auth to JWT" PR with 🔴 91% failure risk
-3. **Show Risk Factors** → "Large change: 1090 lines, dependency changes, no test coverage"
-4. **Merge the PR** → CI run triggers → **Dashboard auto-updates** → Failure detected!
-5. **Open the Incident** → AI Root Cause Panel: "JWT secret not configured in test environment"
-6. **Show the Diff** → Exact fix shown in unified diff format
-7. **Click "Simulate Fix"** → Watch sandbox steps run → "CI pipeline would PASS — 94% confidence"
-8. **Navigate to Incident Memory Graph** → Show "95% similar to Incident #8 from 3 weeks ago"
-9. **Close with Analytics page** → "MTTR down 23% with SentinelOps. Deployment stability: 87%."
-
-**Demo runtime: ~3 minutes. Keep it tight.**
-
----
-
-## 🔌 GitHub Webhook Setup
-
-1. Go to your GitHub repo → Settings → Webhooks → Add webhook
-2. **Payload URL:** `https://your-backend.render.com/api/webhooks/github`
-3. **Content type:** `application/json`
-4. **Events:** Pull requests, Workflow runs
-5. **Secret:** Set `GITHUB_WEBHOOK_SECRET` in your `.env`
-
----
-
-## 🧪 Running Tests
-
-```bash
-cd sentinelops-backend
-pytest tests/ -v
-```
-
----
-
-## 🗺️ Roadmap
-
-- [ ] **v1.1:** CircleCI and Jenkins adapter plugins
-- [ ] **v1.2:** Slack/Teams notification integration
-- [ ] **v2.0:** Autonomous PR comment posting with risk report
-- [ ] **v2.1:** Multi-organization SaaS with isolated namespaces
-- [ ] **v3.0:** Kubernetes deployment with per-worker autoscaling
-- [ ] **v3.1:** SOC2 compliance mode with audit logging
-
----
-
-## 👥 Team
-
-Built for DevDash 2026 — "Code the Tomorrow"
+**Arsh Verma**  
+_Engineering Decision Intelligence & AI Infrastructure_
 
 ---
 
 ## 📜 License
 
-MIT License — see LICENSE file for details
+MIT License — see [LICENSE](LICENSE) file for details
 
 ---
 
-## 🤖 AI Disclosure
+## 🤖 Technology Attribution
 
-This project uses:
+This project utilizes cutting-edge AI technologies:
 
-- **OpenAI GPT-4o** for root cause analysis and fix suggestions
-- **SentenceTransformers (all-MiniLM-L6-v2)** for log embedding and similarity search
-- **scikit-learn** for CI failure prediction
-- **Claude (Anthropic)** assisted with initial architecture planning
-
-Per DevDash 2026 rules, all AI model usage is disclosed above.
+- **LLM Engine**: OpenAI GPT-4o for root cause analysis and automated patching.
+- **Embeddings**: SentenceTransformers (`all-MiniLM-L6-v2`) for semantic similarity.
+- **Predictive Analytics**: scikit-learn Logistic Regression for risk forecasting.
