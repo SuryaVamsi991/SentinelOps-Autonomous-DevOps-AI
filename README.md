@@ -173,26 +173,33 @@ sentinelops/
     ├── hooks/                  # Custom React hooks
     └── lib/                    # API client + utilities
 ```
+## ☕ Support the Project
+
+If you find this tool helpful and want to support its development, consider buying me a coffee! Your support helps keep the project alive and free.
+
+<div align="center">
+    
+<a href="https://www.buymeacoffee.com/ArshVerma">
+  <img src="public/buy-me-a-coffee.png" width="200" />
+</a>
+
+</div>
+
+## 📱 Connect with Me
+
+I'd love to hear your feedback or discuss potential collaborations!
+
+<div align="center">
+
+[![GitHub](https://skillicons.dev/icons?i=github)](https://github.com/ArshVermaGit)
+[![LinkedIn](https://skillicons.dev/icons?i=linkedin)](https://www.linkedin.com/in/arshvermadev/)
+[![Twitter](https://skillicons.dev/icons?i=twitter)](https://x.com/TheArshVerma)
+[![Gmail](https://skillicons.dev/icons?i=gmail)](mailto:arshverma.dev@gmail.com)
+
+</div>
 
 ---
 
-## 👥 Author
-
-**Arsh Verma**  
-_Engineering Decision Intelligence & AI Infrastructure_
-
----
-
-## 📜 License
-
-MIT License — see [LICENSE](LICENSE) file for details
-
----
-
-## 🤖 Technology Attribution
-
-This project utilizes cutting-edge AI technologies:
-
-- **LLM Engine**: OpenAI GPT-4o for root cause analysis and automated patching.
-- **Embeddings**: SentenceTransformers (`all-MiniLM-L6-v2`) for semantic similarity.
-- **Predictive Analytics**: scikit-learn Logistic Regression for risk forecasting.
+<p align="center">
+  Built with ❤️ by <a href="https://github.com/ArshVermaGit">Arsh Verma</a>
+</p>
