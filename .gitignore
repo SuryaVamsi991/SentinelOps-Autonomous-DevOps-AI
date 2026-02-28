@@ -1,0 +1,106 @@
+# SentinelOps Root .gitignore
+
+# -----------------------------------------------------------------------------
+# OS Specific Files
+# -----------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# -----------------------------------------------------------------------------
+# IDE and Tooling
+# -----------------------------------------------------------------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.history/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+.prettiercache
+
+# -----------------------------------------------------------------------------
+# Frontend (Next.js / Node)
+# -----------------------------------------------------------------------------
+node_modules/
+/sentinelops-frontend/node_modules/
+/sentinelops-frontend/.next/
+/sentinelops-frontend/out/
+/sentinelops-frontend/build/
+/sentinelops-frontend/.turbo/
+/sentinelops-frontend/stats.html
+
+# -----------------------------------------------------------------------------
+# Backend (Python / FastAPI)
+# -----------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.python-version
+.coverage
+htmlcov/
+.tox/
+.nox/
+.cache/
+sentinelops-backend/__pycache__/
+sentinelops-backend/app/__pycache__/
+sentinelops-backend/app/routers/__pycache__/
+sentinelops-backend/app/models/__pycache__/
+sentinelops-backend/app/services/__pycache__/
+sentinelops-backend/app/workers/__pycache__/
+
+# -----------------------------------------------------------------------------
+# Virtual Environments
+# -----------------------------------------------------------------------------
+.venv/
+venv/
+ENV/
+env/
+lib/
+bin/
+include/
+
+# -----------------------------------------------------------------------------
+# Environment Variables (Secrets)
+# -----------------------------------------------------------------------------
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.envrc
+sentinelops-backend/.env
+sentinelops-frontend/.env.local
+
+# -----------------------------------------------------------------------------
+# Databases and Docker
+# -----------------------------------------------------------------------------
+*.sqlite
+*.db
+pgdata/
+postgres-data/
+redis-data/
+docker-compose.override.yml
+
+# -----------------------------------------------------------------------------
+# ML Models and Data
+# -----------------------------------------------------------------------------
+# Note: Keep model.pkl if it's required for the initial demo, 
+# but usually models should be ignored and managed separately.
+# sentinelops-backend/app/ml/model.pkl
+
+# -----------------------------------------------------------------------------
+# Testing and Analytics
+# -----------------------------------------------------------------------------
+cypress/videos/
+cypress/screenshots/
+test-results/
+coverage/

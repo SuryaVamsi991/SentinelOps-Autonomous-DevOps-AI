@@ -127,3 +127,60 @@ async def get_risk_heatmap(db: AsyncSession = Depends(get_db)):
             for pr in prs
         ]
     }
+
+@router.get("/activities")
+async def get_recent_activities(limit: int = 15, db: AsyncSession = Depends(get_db)):
+    """Fetch a unified list of recent system activities for the live feed."""
+    activities = []
+    
+    # 1. Recent Incidents
+    inc_query = await db.execute(select(Incident).order_by(desc(Incident.created_at)).limit(limit))
+    for inc in inc_query.scalars().all():
+        activities.append({
+            "id": f"inc_{inc.id}",
+            "type": "incident",
+            "message": f"AI analysis complete: {inc.root_cause[:50]}...",
+            "time": inc.created_at,
+            "timestamp": inc.created_at,
+        })
+        
+    # 2. Recent CI Runs (Failures and Successes)
+    run_query = await db.execute(select(CIRun).order_by(desc(CIRun.started_at)).limit(limit))
+    for run in run_query.scalars().all():
+        activities.append({
+            "id": f"run_{run.id}",
+            "type": "success" if run.status == "success" else "failure",
+            "message": f"CI {run.status}: {run.workflow_name}",
+            "time": run.started_at,
+            "timestamp": run.started_at,
+        })
+        
+    # 3. High Risk PRs
+    pr_query = await db.execute(
+        select(PullRequest)
+        .where(PullRequest.risk_level.in_(["high", "caution"]))
+        .order_by(desc(PullRequest.created_at))
+        .limit(limit)
+    )
+    for pr in pr_query.scalars().all():
+        activities.append({
+            "id": f"pr_{pr.id}",
+            "type": "pr_risk",
+            "message": f"{'🔴 High-risk' if pr.risk_level == 'high' else '🟡 Caution'}: PR '{pr.title}'",
+            "time": pr.created_at,
+            "timestamp": pr.created_at,
+        })
+        
+    # Sort chronologically (newest first)
+    activities.sort(key=lambda x: x["timestamp"], reverse=True)
+    
+    # Format times relative for the frontend (simplified relative simulation)
+    from datetime import datetime
+    now = datetime.utcnow()
+    for act in activities:
+        diff = now - act["timestamp"]
+        mins = int(diff.total_seconds() / 60)
+        act["time"] = "just now" if mins == 0 else f"{mins}m ago" if mins < 60 else f"{mins//60}h ago"
+        del act["timestamp"] # Clean up sort key
+        
+    return activities[:limit]

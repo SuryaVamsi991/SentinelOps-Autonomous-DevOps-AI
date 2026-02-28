@@ -1,10 +1,20 @@
 "use client"
-import { Bell, Search } from "lucide-react"
 import { useState } from "react"
+import { Bell, Search } from "lucide-react"
+import { useWebSocket } from "@/hooks/useWebSocket"
+import { useSearchStore } from "@/hooks/useSearchStore"
 
 export default function TopBar() {
-  const [connected] = useState(true)
-  const [notifications] = useState<string[]>([])
+  const [connected, setConnected] = useState(false)
+  const [notifications, setNotifications] = useState<string[]>([])
+  const { query, setQuery } = useSearchStore()
+  
+  useWebSocket((data) => {
+    if (data.type === "new_incident") {
+      setNotifications(prev => [data.message as string, ...prev.slice(0, 4)])
+    }
+    setConnected(true)
+  })
   
   return (
     <header className="h-14 bg-[#111827] border-b border-gray-800 flex items-center px-6 justify-between shrink-0">
@@ -14,6 +24,8 @@ export default function TopBar() {
         <input
           className="bg-transparent text-sm text-gray-400 placeholder-gray-600 outline-none flex-1"
           placeholder="Search incidents, repos, PRs..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
         <kbd className="text-xs text-gray-600 border border-gray-700 rounded px-1">⌘K</kbd>
       </div>

@@ -16,6 +16,7 @@ interface SimResult {
   tests_failed: number
   confidence: string
   steps: SimStep[]
+  is_mock?: boolean
 }
 
 export default function SimulationModal({ incidentId, onClose }: { incidentId: string; onClose: () => void }) {
@@ -25,25 +26,23 @@ export default function SimulationModal({ incidentId, onClose }: { incidentId: s
   
   const runSimulation = async () => {
     setRunning(true)
-    setSteps([])
-    
-    const mockSteps = [
-      "Apply patch",
-      "Install dependencies", 
-      "Run unit tests",
-      "Run integration tests",
-      "Build Docker image"
-    ]
-    
-    for (let i = 0; i < mockSteps.length; i++) {
-      setSteps(prev => [...prev, { step: mockSteps[i], status: "running", duration_ms: 0 }])
-      await new Promise(r => setTimeout(r, 600))
-    }
+    setSteps([{ step: "Initializing sandbox environment...", status: "running", duration_ms: 0 }])
     
     try {
       const response = await apiClient.post(`/simulation/${incidentId}/apply-fix`)
-      setResult(response.data)
-      setSteps(response.data.steps)
+      const finalData = response.data
+      
+      // Simulate real-time stepping based on backend durations
+      setSteps([])
+      for (const step of finalData.steps) {
+        setSteps(prev => [...prev, { ...step, status: "running", duration_ms: 0 }])
+        // Wait relative to real duration (capped for UX)
+        await new Promise(r => setTimeout(r, Math.min(step.duration_ms / 5, 1000)))
+        setSteps(prev => prev.map((p, i) => i === prev.length - 1 ? step : p))
+        if (step.status === "failure") break
+      }
+      
+      setResult(finalData)
     } catch {
       setResult({ success: false, predicted_outcome: "Simulation failed", tests_passed: 0, tests_failed: 0, confidence: "0%", steps: [] })
     }
@@ -55,7 +54,14 @@ export default function SimulationModal({ incidentId, onClose }: { incidentId: s
       <div className="bg-[#111827] border border-gray-700 rounded-2xl p-6 w-full max-w-md mx-4">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h3 className="font-bold text-white">⚡ Self-Healing Simulation</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="font-bold text-white">⚡ Self-Healing Simulation</h3>
+              {result?.is_mock && (
+                <span className="text-[10px] bg-amber-500/10 text-amber-500 border border-amber-500/20 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">
+                  Demo Mode
+                </span>
+              )}
+            </div>
             <p className="text-xs text-gray-500 mt-0.5">Apply AI patch in sandbox environment</p>
           </div>
           <button onClick={onClose} className="text-gray-500 hover:text-white">

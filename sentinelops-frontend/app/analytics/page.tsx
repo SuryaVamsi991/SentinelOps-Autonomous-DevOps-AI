@@ -13,12 +13,17 @@ interface AnalyticsData {
   }>;
 }
 
+import { useToastStore } from "@/components/ui/Toast"
+
 export default function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsData | null>(null)
-  
+  const addToast = useToastStore(state => state.addToast)
+
   useEffect(() => {
-    apiClient.get<AnalyticsData>("/dashboard/ci-health?days=30").then(r => setData(r.data)).catch(() => {})
-  }, [])
+    apiClient.get<AnalyticsData>("/dashboard/ci-health?days=30")
+      .then(r => setData(r.data))
+      .catch(() => addToast("Failed to fetch analytics data", "error"))
+  }, [addToast])
   
   return (
     <div className="space-y-6">

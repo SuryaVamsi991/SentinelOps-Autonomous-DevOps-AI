@@ -1,5 +1,7 @@
 "use client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useWebSocket } from "@/hooks/useWebSocket"
+import { apiClient } from "@/lib/api"
 
 interface Activity {
   id: string
@@ -9,18 +11,24 @@ interface Activity {
   repo?: string
 }
 
-const MOCK_ACTIVITIES: Activity[] = [
-  { id: "1", type: "failure", message: "CI failed: api-gateway / Build & Test", time: "2m ago", repo: "api-gateway" },
-  { id: "2", type: "incident", message: "AI analysis complete: root cause identified", time: "2m ago" },
-  { id: "3", type: "pr_risk", message: "🔴 High-risk PR detected: auth migration", time: "8m ago" },
-  { id: "4", type: "success", message: "CI passed: frontend-app / Deploy Staging", time: "12m ago" },
-  { id: "5", type: "success", message: "CI passed: payment-service / Unit Tests", time: "23m ago" },
-  { id: "6", type: "pr_risk", message: "🟡 Caution: rate-limiter PR (54% risk)", time: "34m ago" },
-  { id: "7", type: "failure", message: "CI failed: data-pipeline / Integration", time: "41m ago" },
-]
-
 export default function LiveActivityFeed() {
-  const [activities] = useState<Activity[]>(MOCK_ACTIVITIES)
+  const [activities, setActivities] = useState<Activity[]>([])
+  
+  useEffect(() => {
+    // Fetch initial dynamic data, zero hardcoding
+    apiClient.get("/dashboard/activities?limit=10").then(r => setActivities(r.data))
+  }, [])
+  
+  useWebSocket((data) => {
+    const newActivity: Activity = {
+      id: Date.now().toString(),
+      type: data.type === "ci_failure" ? "failure" : data.type === "new_incident" ? "incident" : "success",
+      message: data.message as string,
+      time: "just now",
+      repo: data.repo_name as string,
+    }
+    setActivities(prev => [newActivity, ...prev.slice(0, 9)])
+  })
   
   const typeConfig = {
     failure: { dot: "bg-red-500", text: "text-red-400" },

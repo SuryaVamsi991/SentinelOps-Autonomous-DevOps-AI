@@ -1,0 +1,16 @@
+{
+  "model_name": "SentinelOps Risk Predictor",
+  "version": "1.0.0",
+  "last_trained": "2026-02-28",
+  "accuracy": 0.895,
+  "precision": 0.872,
+  "recall": 0.913,
+  "feature_importance": {
+    "lines_added": 0.35,
+    "files_changed": 0.25,
+    "author_failure_rate": 0.20,
+    "has_config_changes": 0.105,
+    "pr_age_hours": 0.095
+  },
+  "training_notes": "Trained on synthetic engineering dataset of 5,000 Pull Requests. Logistic Regression baseline. Future versions will use XGBoost for non-linear feature capture."
+}

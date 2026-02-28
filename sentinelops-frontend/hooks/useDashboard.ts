@@ -25,29 +25,31 @@ interface DashboardData {
   }>
 }
 
+import { useToastStore } from "@/components/ui/Toast"
+
 export function useDashboard() {
-  const [data, setData] = useState<DashboardData | null>(null)
+  const [summary, setSummary] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const addToast = useToastStore((state: { addToast: (msg: string, type: "success" | "error" | "info") => void }) => state.addToast)
   
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchSummary = async () => {
       try {
         const r = await apiClient.get("/dashboard/summary")
-        setData(r.data)
+        setSummary(r.data)
       } catch {
-        setError("Failed to load dashboard data")
+        addToast("Failed to fetch dashboard summary", "error")
       } finally {
         setLoading(false)
       }
     }
     
-    fetchData()
+    fetchSummary()
     
     // Refresh every 30 seconds
-    const interval = setInterval(fetchData, 30000)
+    const interval = setInterval(fetchSummary, 30000)
     return () => clearInterval(interval)
-  }, [])
+  }, [addToast])
   
-  return { data, loading, error }
+  return { data: summary, loading }
 }

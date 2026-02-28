@@ -26,23 +26,46 @@ async def simulate_fix(incident_id: int, db: AsyncSession = Depends(get_db)):
     # Simulate processing time (makes demo feel real)
     await asyncio.sleep(2)
     
-    # Simulation result based on LLM confidence
+    # Simulation result based on LLM confidence (deterministic seed)
+    random.seed(incident_id) # Ensure same incident always gives same simulation result
+    
     success_probability = incident.llm_confidence if incident.llm_confidence else 0.75
     success = random.random() < success_probability
     
+    # Dynamic Step Generation based on Incident Data
+    steps = [
+        {"step": f"Apply generated patch to {len(incident.responsible_files)} files", "status": "success", "duration_ms": 350},
+        {"step": "Install repository dependencies", "status": "success", "duration_ms": 4200}
+    ]
+    
+    # Determine test suites dynamically
+    workflow = incident.ci_run.workflow_name.lower() if incident.ci_run else "default"
+    if "ui" in workflow or "frontend" in workflow:
+        test_steps = [("Run component tests", 8000), ("Run e2e (Cypress)", 15000)]
+    elif "api" in workflow or "backend" in workflow:
+        test_steps = [("Run unit tests (pytest)", 5000), ("Run integration DB tests", 12000)]
+    else:
+        test_steps = [("Run standard test suite", 10000)]
+        
+    for name, base_duration in test_steps:
+        # If failure is predicted, fail on the last test step
+        is_last_test = name == test_steps[-1][0]
+        if not success and is_last_test:
+            steps.append({"step": name, "status": "failure", "duration_ms": base_duration})
+            break
+        steps.append({"step": name, "status": "success", "duration_ms": base_duration})
+        
+    if success:
+        steps.append({"step": "Build verified Docker image", "status": "success", "duration_ms": 18000})
+        
     simulation_result = {
         "success": success,
-        "steps": [
-            {"step": "Apply patch", "status": "success", "duration_ms": 234},
-            {"step": "Install dependencies", "status": "success", "duration_ms": 4521},
-            {"step": "Run unit tests", "status": "success" if success else "failure", "duration_ms": 12043},
-            {"step": "Run integration tests", "status": "success" if success else "skipped", "duration_ms": 8932 if success else 0},
-            {"step": "Build Docker image", "status": "success" if success else "skipped", "duration_ms": 23100 if success else 0},
-        ],
+        "steps": steps,
         "predicted_outcome": "CI pipeline would PASS" if success else "CI pipeline would still FAIL — additional fix required",
         "confidence": f"{int(success_probability * 100)}%",
-        "tests_passed": 47 if success else 31,
-        "tests_failed": 0 if success else 16,
+        "tests_passed": 142 if success else 24, # Deterministic based on outcome
+        "tests_failed": 0 if success else 3,
+        "is_mock": True # Flag for UI transparency
     }
     
     # Update incident status

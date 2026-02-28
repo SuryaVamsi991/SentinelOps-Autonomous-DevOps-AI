@@ -98,11 +98,11 @@ PR_TEMPLATES = [
 INCIDENTS_DATA = [
     {
         "root_cause": "The PostgreSQL driver upgrade introduced a breaking change in connection string format. The new v15.x driver requires `sslmode=require` explicitly, which was not set in the docker-compose environment variables.",
-        "responsible_files": ["docker-compose.yml", "app/database.py", "alembic/env.py"],
+        "responsible_files": ["docker compose.yml", "app/database.py", "alembic/env.py"],
         "error_category": "config",
         "llm_confidence": 0.94,
         "suggested_fix": "Add `sslmode=require` to the DATABASE_URL environment variable and update the connection pool configuration in app/database.py to use the new driver's connection parameters.",
-        "fix_diff": '--- a/docker-compose.yml\n+++ b/docker-compose.yml\n@@ -15,7 +15,7 @@\n     environment:\n-      - DATABASE_URL=postgresql://user:pass@postgres:5432/db\n+      - DATABASE_URL=postgresql://user:pass@postgres:5432/db?sslmode=require\n',
+        "fix_diff": '--- a/docker compose.yml\n+++ b/docker compose.yml\n@@ -15,7 +15,7 @@\n     environment:\n-      - DATABASE_URL=postgresql://user:pass@postgres:5432/db\n+      - DATABASE_URL=postgresql://user:pass@postgres:5432/db?sslmode=require\n',
         "estimated_fix_time": "5 minutes",
         "risk_if_unresolved": "All database connections will fail in staging and production",
     },

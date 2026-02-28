@@ -4,6 +4,7 @@ export interface Repository {
   full_name: string
   url: string
   risk_score: number
+  risk_level: "safe" | "caution" | "high"
   failure_rate: number
   deployment_stability: number
   last_analyzed: string

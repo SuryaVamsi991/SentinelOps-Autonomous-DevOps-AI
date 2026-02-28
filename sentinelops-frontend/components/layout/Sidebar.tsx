@@ -3,7 +3,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { 
   LayoutDashboard, GitPullRequest, AlertTriangle, 
-  BarChart3, GitBranch, Shield
+  BarChart3, GitBranch
 } from "lucide-react"
 
 const navItems = [
@@ -22,9 +22,7 @@ export default function Sidebar() {
       {/* Logo */}
       <div className="p-6 border-b border-gray-800">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center">
-            <Shield className="w-5 h-5 text-white" />
-          </div>
+          <img src="/logo.png" alt="SentinelOps Logo" className="w-9 h-9 rounded-lg object-contain" />
           <div>
             <div className="font-bold text-white text-sm">SentinelOps</div>
             <div className="text-xs text-gray-500">DevOps AI Co-Pilot</div>

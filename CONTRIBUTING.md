@@ -1,0 +1,56 @@
+# Contributing to SentinelOps 🛡️
+
+First off, thank you for considering contributing to SentinelOps! It's people like you that make SentinelOps a great tool for the engineering community.
+
+## 🏗️ Architecture Overview
+
+SentinelOps is built with a decoupled architecture to ensure scalability:
+
+- **Backend (FastAPI)**: Handles the high-frequency webhook traffic and serves the API.
+- **Workers (Celery)**: Process heavy AI analysis and ML training out-of-band.
+- **Frontend (Next.js 14)**: provides a real-time, high-performance dashboard for decision intelligence.
+
+## 🚀 How to Contribute
+
+### 1. Setting Up for Development
+
+Follow the **Quick Start** guide in the [README.md](./README.md) to get the environment running.
+
+### 2. Adding New AI Analysis Rules
+
+If you want to improve the `RiskAnalyzer`:
+
+1. Navigate to `sentinelops-backend/app/services/risk_analyzer.py`.
+2. Add your logic to the `analyze_pr` method.
+3. If it's a new metric, ensure you update the Pydantic schemas in `app/schemas/pull_request.py`.
+
+### 3. Training the ML Model
+
+We use a Logistic Regression model for PR risk scoring. To enhance the model:
+
+1. Update the feature extraction in `sentinelops-backend/app/ml/train.py`.
+2. Run the training script: `docker-compose exec api python -m app.ml.train`.
+3. Update `app/ml/metadata.json` with your new performance metrics.
+
+### 4. Frontend UI Components
+
+We use **Tailwind CSS** and **Framer Motion**.
+
+- Reusable UI elements live in `sentinelops-frontend/components/ui`.
+- Page-specific logic should be kept in the `app/` directory (App Router).
+- Use `zustand` for any global state (like the Toast system).
+
+## 🧪 Testing Guidelines
+
+Before submitting a PR, please ensure:
+
+- **Backend**: All tests pass (`pytest`).
+- **Frontend**: Linting passes (`npm run lint`) and the build is successful (`npm run build`).
+
+## 📜 Code of Conduct
+
+Please be respectful and professional in all interactions. We aim to build a welcoming environment for all engineers.
+
+## 🗺️ Roadmap Compatibility
+
+Check our roadmap in [README.md](./README.md#roadmap) to see where we're headed. If your feature fits the vision, we'd love to see it!

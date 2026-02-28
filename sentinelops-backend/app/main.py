@@ -13,16 +13,26 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="SentinelOps API",
-    description="Autonomous DevOps AI Co-Pilot — Engineering Decision Intelligence",
+    description="""
+🚀 **Autonomous DevOps AI Co-Pilot**
+Engineering decision intelligence. Detect failures before they impact production.
+
+### Key Capabilities:
+* **Predictive Analysis** - ML-based PR risk scoring.
+* **Root Cause Identification** - LLM-powered failure explanation.
+* **Self-Healing Simulation** - Sandbox fix testing.
+    """,
     version="1.0.0",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
     lifespan=lifespan
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Restrict in production
+    allow_origins=["*"],  # Restrict to specific domains in production (e.g., localhost:3000)
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 

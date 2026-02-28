@@ -3,60 +3,47 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { apiClient } from "@/lib/api"
 import { AlertTriangle, Brain } from "lucide-react"
-
-interface Incident {
-  id: number
-  root_cause: string
-  error_category: string
-  status: string
-  estimated_fix_time: string
-}
+import { Incident } from "@/types"
 
 export default function RecentIncidents() {
   const [incidents, setIncidents] = useState<Incident[]>([])
   
   useEffect(() => {
-    apiClient.get<Incident[]>("/incidents/?limit=5").then((r: { data: Incident[] }) => setIncidents(r.data)).catch(() => {})
+    apiClient.get("/incidents/?limit=5").then(r => setIncidents(r.data))
   }, [])
   
   const categoryColors: Record<string, string> = {
-    dependency: "text-orange-400 bg-orange-400/10",
-    syntax: "text-red-400 bg-red-400/10",
-    test: "text-yellow-400 bg-yellow-400/10",
-    config: "text-blue-400 bg-blue-400/10",
-    runtime: "text-purple-400 bg-purple-400/10",
-    network: "text-cyan-400 bg-cyan-400/10",
+    dependency: "text-orange-400",
+    syntax: "text-red-400",
+    test: "text-yellow-400",
+    config: "text-blue-400",
+    runtime: "text-purple-400",
+    network: "text-cyan-400",
   }
   
   return (
-    <div className="bg-[#111827] border border-gray-800 rounded-xl p-5 shadow-xl">
-      <div className="flex items-center justify-between mb-5">
-        <div className="flex items-center gap-2.5">
-          <div className="p-1.5 bg-indigo-500/10 rounded-lg">
-            <Brain className="w-4 h-4 text-indigo-400" />
-          </div>
-          <h3 className="font-semibold text-white tracking-tight">Recent AI Insights</h3>
+    <div className="bg-[#111827] border border-gray-800 rounded-xl p-5">
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <Brain className="w-4 h-4 text-indigo-400" />
+          <h3 className="font-semibold text-white">Recent AI-Analyzed Incidents</h3>
         </div>
-        <Link href="/incidents" className="text-[10px] uppercase font-bold tracking-wider text-indigo-400 hover:text-indigo-300 transition-colors">View All Explorer</Link>
+        <Link href="/incidents" className="text-xs text-indigo-400 hover:text-indigo-300">View all →</Link>
       </div>
       
-      <div className="space-y-2.5">
+      <div className="space-y-3">
         {incidents.length === 0 && (
-          <div className="py-8 text-center bg-gray-900/40 rounded-lg border border-dashed border-gray-800">
-            <p className="text-sm text-gray-600">All systems operational ✅</p>
-          </div>
+          <p className="text-sm text-gray-600 py-4 text-center">No incidents detected — all systems healthy ✅</p>
         )}
         
         {incidents.map((inc) => (
           <Link
             key={inc.id}
             href={`/incidents/${inc.id}`}
-            className="block p-3.5 bg-gray-900/60 border border-gray-800/50 rounded-xl hover:bg-gray-800 hover:border-indigo-500/30 transition-all group lg:hover:translate-x-1 duration-300"
+            className="block p-3 bg-gray-900 rounded-lg hover:bg-gray-800 transition-all group"
           >
-            <div className="flex items-start gap-3">
-              <div className={`mt-0.5 p-1.5 rounded-lg shrink-0 ${inc.status === "open" ? "bg-red-400/10 text-red-400" : "bg-emerald-400/10 text-emerald-400"}`}>
-                <AlertTriangle className="w-3.5 h-3.5" />
-              </div>
+            <div className="flex items-start gap-2">
+              <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-xs text-gray-200 line-clamp-1 group-hover:text-white transition-colors">{inc.root_cause}</p>
                 <div className="flex items-center gap-3 mt-2">
