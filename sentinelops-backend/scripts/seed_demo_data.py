@@ -31,7 +31,7 @@ REPOS = [
 PR_TEMPLATES = [
     {
         "title": "feat: Upgrade PostgreSQL driver to 15.x",
-        "author": "alex.dev",
+        "author": "arsh.verma",
         "lines_added": 234, "lines_deleted": 89,
         "files_changed": 12,
         "has_dependency_changes": True,
@@ -84,7 +84,7 @@ PR_TEMPLATES = [
     },
     {
         "title": "feat: Add rate limiting middleware (Redis)",
-        "author": "alex.dev",
+        "author": "arsh.verma",
         "lines_added": 312, "lines_deleted": 0,
         "files_changed": 7,
         "has_dependency_changes": True,

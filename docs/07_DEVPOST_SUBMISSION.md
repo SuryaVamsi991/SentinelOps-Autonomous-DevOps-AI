@@ -1,10 +1,12 @@
 # SentinelOps — Devpost Submission Content
 
 ## Project Title
+
 **SentinelOps: Autonomous DevOps AI Co-Pilot**
 
 ## Tagline
-*Engineering decision intelligence. Predict CI failures before they happen.*
+
+_Engineering decision intelligence. Predict CI failures before they happen._
 
 ---
 
@@ -24,7 +26,7 @@ SentinelOps is a **real-time AI engineering intelligence system** — not a chat
 
 **Before a PR is merged:** Analyzes code diff, author history, file types, and dependency changes. Assigns a risk probability (0–100%) and blocks dangerous merges with a visual traffic light (🟢 Safe / 🟡 Caution / 🔴 High Risk).
 
-**When CI fails:** Automatically parses the log, extracts the error block, retrieves the code diff, and sends it to OpenAI GPT-4o. Returns a structured root cause explanation in natural language — *what broke, which files caused it, the exact fix as a code diff, and estimated time to resolve.*
+**When CI fails:** Automatically parses the log, extracts the error block, retrieves the code diff, and sends it to OpenAI GPT-4o. Returns a structured root cause explanation in natural language — _what broke, which files caused it, the exact fix as a code diff, and estimated time to resolve._
 
 **Over time:** Embeds every log using SentenceTransformers. When a new failure occurs, it matches against historical incidents. "This failure is 95% similar to Incident #234 — that was a memory leak in the connection pool." Pattern recognition at machine speed.
 
@@ -35,6 +37,7 @@ SentinelOps is a **real-time AI engineering intelligence system** — not a chat
 ## How It Works (Technical)
 
 ### Data Flow
+
 ```
 GitHub PR opened
 → Webhook fires → FastAPI receives → Redis queue → Celery worker picks up
@@ -92,18 +95,18 @@ The combination of pre-merge risk prediction + post-failure LLM analysis + cross
 
 ## Impact
 
-| Metric | Before SentinelOps | With SentinelOps |
-|--------|-------------------|------------------|
-| Mean Time to Root Cause | 2–6 hours | < 2 minutes |
-| Repeat Incidents | ~40% | < 5% (similarity detection) |
-| Risky PR Merges | Unknown until CI | Flagged before merge |
-| Engineering Hours Lost/Month | 100+ | < 20 |
+| Metric                       | Before SentinelOps | With SentinelOps            |
+| ---------------------------- | ------------------ | --------------------------- |
+| Mean Time to Root Cause      | 2–6 hours          | < 2 minutes                 |
+| Repeat Incidents             | ~40%               | < 5% (similarity detection) |
+| Risky PR Merges              | Unknown until CI   | Flagged before merge        |
+| Engineering Hours Lost/Month | 100+               | < 20                        |
 
 ---
 
 ## Team
 
-[Your names and roles here]
+**Arsh Verma** — Lead Engineer & AI Architect
 
 ---
 
@@ -120,10 +123,13 @@ SentinelOps is built to be enterprise-ready from day one. Every architecture dec
 ---
 
 ## Video Demo Link
+
 [YouTube/Google Drive link here]
 
 ## GitHub Repository
+
 [GitHub link here]
 
 ## Presentation Slides
+
 [Attached PDF]

@@ -5,8 +5,17 @@ import Sidebar from "@/components/layout/Sidebar"
 import TopBar from "@/components/layout/TopBar"
 import { usePathname } from "next/navigation"
 import { ToastContainer } from "@/components/ui/Toast"
+import type { Metadata } from "next"
 
 const inter = Inter({ subsets: ["latin"] })
+
+export const metadata: Metadata = {
+  title: "SentinelOps | DevOps AI Co-Pilot by Arsh Verma",
+  description: "Autonomous Engineering Decision Intelligence",
+  icons: {
+    icon: "/favicon.ico",
+  },
+}
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
