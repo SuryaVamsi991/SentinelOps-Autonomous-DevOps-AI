@@ -2,21 +2,34 @@
 SentinelOps API - Decision Intelligence for DevOps
 Author: Arsh Verma
 """
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
+from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
+import logging
+import traceback
+from app.config import settings
 """
 Database Configuration
 Author: Arsh Verma
 """
 from contextlib import asynccontextmanager
 from app.database import create_tables
-from app.routers import webhooks, repositories, pull_requests, incidents, dashboard, analysis, simulation, settings, analytics_advanced
+from app.routers import webhooks, repositories, pull_requests, incidents, dashboard, analysis, simulation, settings as settings_router, analytics_advanced
 from app.services.websocket_service import manager
 import uvicorn
 
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await create_tables()
+    try:
+        await create_tables()
+        logger.info("Database tables created successfully")
+    except Exception as e:
+        logger.error(f"Failed to create database tables: {e}")
+        logger.error(traceback.format_exc())
     yield
 
 app = FastAPI(
@@ -36,11 +49,25 @@ Engineering decision intelligence. Detect failures before they impact production
     lifespan=lifespan
 )
 
+# Global Exception Handler
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled exception: {exc}")
+    logger.error(traceback.format_exc())
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": "An internal server error occurred.",
+            "type": exc.__class__.__name__
+        }
+    )
+
+# Configurable CORS origins
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Restrict to specific domains in production (e.g., localhost:3000)
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -52,7 +79,7 @@ app.include_router(incidents.router, prefix="/api/incidents", tags=["Incidents"]
 app.include_router(dashboard.router, prefix="/api/dashboard", tags=["Dashboard"])
 app.include_router(analysis.router, prefix="/api/analysis", tags=["Analysis"])
 app.include_router(simulation.router, prefix="/api/simulation", tags=["Simulation"])
-app.include_router(settings.router, prefix="/api/settings", tags=["Settings"])
+app.include_router(settings_router.router, prefix="/api/settings", tags=["Settings"])
 app.include_router(analytics_advanced.router, prefix="/api/analytics", tags=["Analytics"])
 
 @app.get("/health")
@@ -70,6 +97,9 @@ async def websocket_endpoint(websocket: WebSocket):
             if data == "ping":
                 await websocket.send_text("pong")
     except WebSocketDisconnect:
+        manager.disconnect(websocket)
+    except Exception as e:
+        logger.error(f"WebSocket error: {e}")
         manager.disconnect(websocket)
 
 if __name__ == "__main__":

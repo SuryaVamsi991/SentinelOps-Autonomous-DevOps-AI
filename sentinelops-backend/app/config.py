@@ -23,9 +23,21 @@ class Settings(BaseSettings):
     # App
     SECRET_KEY: str = "sentinelops_dev_key"
     DEBUG: bool = True
+    CORS_ORIGINS: list[str] = ["*"]
     
     # ML Model
     MODEL_PATH: str = "app/ml/model.pkl"
+    
+    @property
+    def is_prod(self) -> bool:
+        return not self.DEBUG
+
+    def validate_keys(self):
+        if self.is_prod:
+            if not self.OPENAI_API_KEY:
+                raise ValueError("OPENAI_API_KEY must be set in production")
+            if not self.GITHUB_TOKEN:
+                raise ValueError("GITHUB_TOKEN must be set in production")
     
     class Config:
         env_file = ".env"
