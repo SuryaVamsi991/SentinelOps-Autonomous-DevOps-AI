@@ -8,6 +8,6 @@ async def test_analyze_failure_mock():
     
     assert "root_cause" in result
     assert "suggested_fix" in result
-    assert result["confidence"] > 0.5
+    assert result["llm_confidence"] > 0.5
     # The mock returns common failure messages, verify it returns a string with some length
     assert len(result["root_cause"]) > 10
