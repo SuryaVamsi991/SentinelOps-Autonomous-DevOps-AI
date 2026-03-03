@@ -22,7 +22,17 @@ interface DashboardData {
     name: string
     risk_score: number
     failure_rate: number
+    risk_drivers?: Array<{ feature: string; impact: number }>
   }>
+  pulse?: {
+    pulse_score: number
+    status: string
+    metrics: {
+      stability: number
+      recovery: number
+      risk_control: number
+    }
+  }
 }
 
 import { useToastStore } from "@/components/ui/Toast"

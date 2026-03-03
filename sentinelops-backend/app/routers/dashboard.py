@@ -42,7 +42,11 @@ async def get_dashboard_summary(db: AsyncSession = Depends(get_db)):
     # MTTR calculation
     resolved_incidents = [i for i in recent_incidents if i.status == "resolved"]
     
+    from app.services.resilience_service import resilience_engine
+    pulse = await resilience_engine.calculate_pulse(db)
+    
     return {
+        "pulse": pulse,
         "repos": {
             "total": len(repos),
             "high_risk": sum(1 for r in repos if r.risk_score > 0.65),
@@ -68,6 +72,27 @@ async def get_dashboard_summary(db: AsyncSession = Depends(get_db)):
             for r in sorted(repos, key=lambda x: x.risk_score, reverse=True)
         ]
     }
+
+@router.post("/ai-chat")
+async def chat_with_sentinel(payload: dict, db: AsyncSession = Depends(get_db)):
+    """AI Chat endpoint for natural language DevOps queries."""
+    from app.services.ai_chat_service import handle_devops_query
+    from app.services.resilience_service import resilience_engine
+    
+    # Gather context
+    pulse = await resilience_engine.calculate_pulse(db)
+    high_risk_prs = await db.execute(select(func.count(PullRequest.id)).where(PullRequest.risk_level == "high"))
+    open_incidents = await db.execute(select(func.count(Incident.id)).where(Incident.status == "open"))
+    
+    context = {
+        "pulse": pulse,
+        "high_risk_count": high_risk_prs.scalar(),
+        "open_incident_count": open_incidents.scalar(),
+        "top_risk_repo": "SentinelOps Core" # Placeholder for demo context
+    }
+    
+    response = await handle_devops_query(payload.get("query", ""), context)
+    return {"response": response}
 
 @router.get("/ci-health")
 async def get_ci_health(days: int = 30, db: AsyncSession = Depends(get_db)):

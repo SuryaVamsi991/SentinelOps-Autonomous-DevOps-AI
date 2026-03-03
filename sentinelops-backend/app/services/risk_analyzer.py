@@ -95,10 +95,22 @@ class RiskAnalyzer:
         if complexity_score > 0.5:
             risk_factors.append(f"High code complexity delta detected (+{complexity_delta:.1f})")
         
+        # Risk drivers for explainability (magnitude of contribution)
+        risk_drivers = [
+            {"feature": "Lines Changed (+)", "impact": round(self.WEIGHTS["lines_changed"] * lines_score, 2)},
+            {"feature": "High-Risk Files (+)", "impact": round(self.WEIGHTS["file_type_risk"] * file_type_score, 2)},
+            {"feature": "Author History (+)", "impact": round(self.WEIGHTS["author_history"] * author_score, 2)},
+            {"feature": "Dependencies (+)", "impact": round(self.WEIGHTS["dependency_changes"] * dependency_score, 2)},
+            {"feature": "Complexity (+)", "impact": round(self.WEIGHTS["complexity_delta"] * complexity_score, 2)},
+        ]
+        # Sort by impact
+        risk_drivers.sort(key=lambda x: x["impact"], reverse=True)
+
         return {
             "risk_probability": risk_probability,
             "risk_level": risk_level,
             "risk_factors": risk_factors,
+            "risk_drivers": risk_drivers,
             "component_scores": {
                 "lines": lines_score,
                 "file_types": file_type_score,

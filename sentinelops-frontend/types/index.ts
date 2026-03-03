@@ -8,6 +8,7 @@ export interface Repository {
   failure_rate: number
   deployment_stability: number
   last_analyzed: string
+  risk_drivers?: Array<{ feature: string; impact: number }>
 }
 
 export interface PullRequest {

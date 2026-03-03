@@ -2,6 +2,7 @@
 import { usePathname } from "next/navigation"
 import Sidebar from "@/components/layout/Sidebar"
 import TopBar from "@/components/layout/TopBar"
+import SentinelChat from "@/components/ai/SentinelChat"
 import { ToastContainer } from "@/components/ui/Toast"
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -22,10 +23,11 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
       <Sidebar />
       <div className="flex-1 flex flex-col overflow-hidden">
         <TopBar />
-        <main className="flex-1 overflow-y-auto p-6">
+        <main className="flex-1 overflow-y-auto p-6 scrollbar-hide">
           {children}
         </main>
       </div>
+      <SentinelChat />
       <ToastContainer />
     </div>
   )
