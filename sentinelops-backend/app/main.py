@@ -10,7 +10,7 @@ Author: Arsh Verma
 """
 from contextlib import asynccontextmanager
 from app.database import create_tables
-from app.routers import webhooks, repositories, pull_requests, incidents, dashboard, analysis, simulation
+from app.routers import webhooks, repositories, pull_requests, incidents, dashboard, analysis, simulation, settings, analytics_advanced
 from app.services.websocket_service import manager
 import uvicorn
 
@@ -52,6 +52,8 @@ app.include_router(incidents.router, prefix="/api/incidents", tags=["Incidents"]
 app.include_router(dashboard.router, prefix="/api/dashboard", tags=["Dashboard"])
 app.include_router(analysis.router, prefix="/api/analysis", tags=["Analysis"])
 app.include_router(simulation.router, prefix="/api/simulation", tags=["Simulation"])
+app.include_router(settings.router, prefix="/api/settings", tags=["Settings"])
+app.include_router(analytics_advanced.router, prefix="/api/analytics", tags=["Analytics"])
 
 @app.get("/health")
 async def health_check():
