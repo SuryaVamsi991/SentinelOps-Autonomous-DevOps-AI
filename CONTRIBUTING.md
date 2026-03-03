@@ -18,10 +18,10 @@ Follow the **Quick Start** guide in the [README.md](./README.md) to get the envi
 
 ### 2. Adding New AI Analysis Rules
 
-If you want to improve the `RiskAnalyzer`:
+If you want to improve the `RiskAnalyzer` or `SimulationEngine`:
 
 1. Navigate to `sentinelops-backend/app/services/risk_analyzer.py`.
-2. Add your logic to the `analyze_pr` method.
+2. For predictive simulations, check `app/services/simulation_service.py`.
 3. If it's a new metric, ensure you update the Pydantic schemas in `app/schemas/pull_request.py`.
 
 ### 3. Training the ML Model
@@ -34,9 +34,10 @@ We use a Logistic Regression model for PR risk scoring. To enhance the model:
 
 ### 4. Frontend UI Components
 
-We use **Tailwind CSS** and **Framer Motion**.
+We use **Tailwind CSS**, **Framer Motion**, and **Lucide React**.
 
 - Reusable UI elements live in `sentinelops-frontend/components/ui`.
+- High-level visualizations like the `RiskHeatmap` live in `components/dashboard`.
 - Page-specific logic should be kept in the `app/` directory (App Router).
 - Use `zustand` for any global state (like the Toast system).
 
