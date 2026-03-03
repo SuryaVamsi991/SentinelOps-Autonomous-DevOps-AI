@@ -82,10 +82,10 @@ npm run dev
 
 ## 🌐 4. Explore the Features
 
-- **Landing Page**: [http://localhost:3000](http://localhost:3000)
 - **AI Dashboard**: [http://localhost:3000/dashboard](http://localhost:3000/dashboard)
 - **PR Gatekeeper**: View risk scores for pre-seeded PRs.
-- **Incident Explorer**: See AI-explained root causes and simulate fixes.
+- **Risk Heatmap**: Explore real-time repository health tiles.
+- **Incident Explorer**: See AI-explained root causes and run Digital Twin simulations.
 
 ---
 
