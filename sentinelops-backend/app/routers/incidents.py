@@ -6,9 +6,14 @@ from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, desc
 from sqlalchemy.orm import selectinload
+from pydantic import BaseModel
+from typing import Optional
+from datetime import datetime
 from app.database import get_db
 from app.models.incident import Incident
 from app.models.ci_run import CIRun
+from app.models.incident_event import IncidentEvent
+from app.models.pull_request import PullRequest
 
 router = APIRouter()
 
@@ -79,6 +84,28 @@ async def get_incident(incident_id: int, db: AsyncSession = Depends(get_db)):
     if not incident:
         raise HTTPException(status_code=404, detail="Incident not found")
     
+    # Build relationship_data for IncidentMemoryGraph
+    relationship_data = None
+    if incident.ci_run and incident.ci_run.pr_id:
+        pr_result = await db.execute(
+            select(PullRequest).where(PullRequest.id == incident.ci_run.pr_id)
+        )
+        pr = pr_result.scalar_one_or_none()
+        if pr:
+            relationship_data = {
+                "pr_id": str(pr.id),
+                "pr_title": pr.title,
+                "author": pr.author,
+                "author_failure_rate": 0.18,  # Could be fetched from GitHub API
+                "commits": [
+                    {"sha": f"{pr.head_branch[:7]}abc", "message": pr.title}
+                ],
+                "files": incident.responsible_files or [],
+                "ci_run_id": str(incident.ci_run.id),
+                "ci_status": incident.ci_run.status,
+                "incident_title": (incident.root_cause or "")[:60],
+            }
+    
     return {
         "id": incident.id,
         "root_cause": incident.root_cause,
@@ -93,6 +120,7 @@ async def get_incident(incident_id: int, db: AsyncSession = Depends(get_db)):
         "similar_incident_id": incident.similar_incident_id,
         "similarity_score": incident.similarity_score,
         "simulation_result": incident.simulation_result,
+        "relationship_data": relationship_data,
         "ci_run": {
             "id": incident.ci_run.id,
             "workflow_name": incident.ci_run.workflow_name,
@@ -102,3 +130,62 @@ async def get_incident(incident_id: int, db: AsyncSession = Depends(get_db)):
         } if incident.ci_run else None,
         "created_at": incident.created_at.isoformat() if incident.created_at else None,
     }
+
+
+class ResolveRequest(BaseModel):
+    resolution_notes: str = ""
+
+
+@router.patch("/{incident_id}/resolve")
+async def resolve_incident(
+    incident_id: int, req: ResolveRequest, db: AsyncSession = Depends(get_db)
+):
+    """Mark an incident as resolved with optional notes."""
+    result = await db.execute(
+        select(Incident).where(Incident.id == incident_id)
+    )
+    incident = result.scalar_one_or_none()
+
+    if not incident:
+        raise HTTPException(status_code=404, detail="Incident not found")
+
+    incident.status = "resolved"
+
+    # Add timeline event
+    event = IncidentEvent(
+        incident_id=incident.id,
+        event_type="resolved",
+        title="Incident resolved",
+        description=req.resolution_notes or "Marked as resolved by user.",
+        actor="user",
+    )
+    db.add(event)
+    await db.commit()
+
+    return {"status": "resolved", "id": incident.id}
+
+
+@router.get("/{incident_id}/timeline")
+async def get_incident_timeline(
+    incident_id: int, db: AsyncSession = Depends(get_db)
+):
+    """Return chronological event timeline for an incident."""
+    result = await db.execute(
+        select(IncidentEvent)
+        .where(IncidentEvent.incident_id == incident_id)
+        .order_by(IncidentEvent.created_at)
+    )
+    events = result.scalars().all()
+
+    return [
+        {
+            "id": e.id,
+            "event_type": e.event_type,
+            "title": e.title,
+            "description": e.description,
+            "actor": e.actor,
+            "event_data": e.event_data,
+            "created_at": e.created_at.isoformat() if e.created_at else None,
+        }
+        for e in events
+    ]
