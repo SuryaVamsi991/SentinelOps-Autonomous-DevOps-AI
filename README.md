@@ -9,13 +9,13 @@
 [![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110-green.svg)](https://fastapi.tiangolo.com/)
 
-SentinelOps is a proactive CI/CD monitoring and self-healing platform that leverages **Machine Learning** to predict build failures and **Generative AI** to automate root-cause analysis. Designed for high-frequency engineering teams, it eliminates the "fail-react" loop by providing predictive intelligence at the Pull Request gate.
+SentinelOps is an **Autonomous DevOps AI Co-Pilot** that engineers **Decision Intelligence** into the heart of the delivery pipeline. It eliminates the "fail-react" loop by providing predictive intelligence at the Pull Request gate and automated root-cause analysis for CI/CD failures.
 
 ---
 
-## 🚀 Key Capabilities
-
 - **🔮 Predictive Risk Scoring**: ML-based auditing of PRs before merge using a custom Logistic Regression model.
+- **🧪 Digital Twin Simulation**: Monte Carlo simulations (1,000 iterations) to predict deployment stability and "blast radius."
+- **🗺️ Cluster Risk Heatmap**: Real-time tile-based visualization of repository and cluster-level health.
 - **🧠 Automated Root Cause**: LLM-powered log analysis provides natural language explanations and patch suggestions.
 - **🔍 Similarity Search**: Uses SentenceTransformers to match new failures against historical incident patterns.
 - **⚡ Self-Healing Sandbox**: Simulates AI-suggested fixes in a containerized environment to verify outcomes.
@@ -40,14 +40,15 @@ Every engineering team suffers from the same pain:
 
 SentinelOps is a **real-time AI engineering intelligence system** that:
 
-| Feature                          | Description                                                       |
-| -------------------------------- | ----------------------------------------------------------------- |
-| 🔮 **Merge Risk Gatekeeper**     | Scores every PR before merge: 🟢 Safe / 🟡 Caution / 🔴 High Risk |
-| 🧠 **LLM Root Cause Analysis**   | OpenAI explains _why_ the CI failed + suggests a patch diff       |
-| 🔍 **Failure Similarity Search** | "95% similar to Incident #234 — memory leak pattern"              |
-| ⚡ **Self-Healing Simulation**   | Apply AI patch in sandbox, rerun tests, see predicted outcome     |
-| 📊 **CI Health Analytics**       | Build trends, anomaly detection, flaky test identification        |
-| 🕸️ **Incident Memory Graph**     | Interactive PR → Commit → Author → Failure relationship graph     |
+| Feature                          | Description                                                             |
+| -------------------------------- | ----------------------------------------------------------------------- |
+| 🔮 **Merge Risk Gatekeeper**     | Scores every PR before merge: 🟢 Safe / 🟡 Caution / 🔴 High Risk       |
+| 🧪 **Digital Twin Engine**       | Runs 1K Monte Carlo iterations to simulate deployment reliability       |
+| 🗺️ **Cluster Risk Heatmap**      | Premium tile-based health intensity mapping for entire infra clusters   |
+| 🧠 **LLM Root Cause Analysis**   | OpenAI explains _why_ the CI failed + suggests a patch diff             |
+| 🔍 **Failure Similarity Search** | Vectorized search: "95% similar to Incident #234 — memory leak pattern" |
+| ⚡ **Self-Healing Simulation**   | Apply AI patch in sandbox, rerun tests, see predicted outcome           |
+| 📊 **CI Health Analytics**       | Build trends, anomaly detection, flaky test identification              |
 
 ---
 
