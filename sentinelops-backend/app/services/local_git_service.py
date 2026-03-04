@@ -6,10 +6,17 @@ Author: Arsh Verma
 import subprocess
 import os
 import json
-import logging
 from typing import Dict, List, Any
 from app.services.risk_analyzer import RiskAnalyzer
 from app.utils.diff_parser import parse_unified_diff
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select, update
+from app.models.repository import Repository
+from app.models.pull_request import PullRequest
+from app.models.ci_run import CIRun
+from app.models.incident import Incident
+from datetime import datetime
+import logging
 
 logger = logging.getLogger(__name__)
 
@@ -230,8 +237,94 @@ class LocalGitService:
         output = self._run_git(repo_path, ["add", "-A"])
         return True  # git add -A doesn't fail unless path is bad
 
+    async def sync_repositories(self, db: AsyncSession) -> None:
+        """Sync all linked repos from disk to the SQLite database."""
+        repos = _load_linked_repos()
+        for repo_cfg in repos:
+            path = repo_cfg["local_path"]
+            name = repo_cfg["name"]
+            status = self.get_repo_status(path)
+            
+            # 1. Update Repository Record
+            res = await db.execute(select(Repository).where(Repository.url == path))
+            repo = res.scalar_one_or_none()
+            
+            if not repo:
+                repo = Repository(
+                    name=name,
+                    full_name=f"local/{name}",
+                    url=path,
+                    github_id=hash(path) % 1000000 # Deterministic mock ID
+                )
+                db.add(repo)
+                await db.flush()
+            
+            repo.risk_score = status["risk"]["risk_probability"]
+            repo.last_analyzed = datetime.utcnow()
+            
+            # 2. Sync 'Local PR' (Uncommitted changes)
+            staged_count = len(status["changed_files"]["staged"])
+            modified_count = len(status["changed_files"]["modified"])
+            
+            if staged_count > 0 or modified_count > 0:
+                # Find or create a 'Local Changes' PR record
+                pr_res = await db.execute(
+                    select(PullRequest).where(
+                        PullRequest.repo_id == repo.id,
+                        PullRequest.github_pr_number == 0 # Identifier for local changes
+                    )
+                )
+                pr = pr_res.scalar_one_or_none()
+                
+                if not pr:
+                    pr = PullRequest(
+                        repo_id=repo.id,
+                        github_pr_number=0,
+                        title=f"Local Changes: {name}",
+                        author="You (Local)",
+                        head_branch=status["branch"],
+                        status="open"
+                    )
+                    db.add(pr)
+                    await db.flush()
+                
+                pr.lines_added = status["risk"].get("lines_added", 0)
+                pr.lines_deleted = status["risk"].get("lines_deleted", 0)
+                pr.files_changed = staged_count + modified_count
+                pr.risk_probability = status["risk"]["risk_probability"]
+                pr.risk_level = status["risk"]["risk_level"]
+                pr.risk_factors = status["risk"].get("risk_factors", [])
+                pr.created_at = datetime.utcnow()
+
+            # 3. Handle Health Failures as Incidents
+            if not status["health"]["passing"]:
+                # Create a CI Run record for the failed local check
+                run = CIRun(
+                    repo_id=repo.id,
+                    workflow_name="Local Health Check",
+                    status="failure",
+                    started_at=datetime.utcnow(),
+                    finished_at=datetime.utcnow(),
+                    log_text="\n".join(status["health"]["errors"])
+                )
+                db.add(run)
+                await db.flush()
+                
+                # Create an Incident
+                incident = Incident(
+                    ci_run_id=run.id,
+                    root_cause=f"Local health check failed in {name}",
+                    error_category="lint" if "npm" in status["health"]["errors"][0] else "syntax",
+                    status="open"
+                )
+                db.add(incident)
+            
+            await db.commit()
+
     def commit_and_push(self, repo_path: str, message: str) -> Dict[str, Any]:
         """Stage all, commit, and push to remote."""
+        # Note: In a real app, we'd pass the DB session here to record the success
+        # but for now we'll do it via the next sync cycle.
         repo_path = os.path.expanduser(repo_path)
         if not message.strip():
             return {"success": False, "error": "Empty commit message"}
