@@ -32,6 +32,7 @@ interface DashboardData {
       recovery: number
       risk_control: number
     }
+    last_updated: string
   }
 }
 
