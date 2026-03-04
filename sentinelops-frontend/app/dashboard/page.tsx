@@ -11,7 +11,7 @@ import { AlertTriangle, CheckCircle, GitPullRequest, Zap, Activity, ShieldCheck,
 import { motion } from "framer-motion"
 
 export default function DashboardPage() {
-  const { data } = useDashboard()
+  const { data, loading } = useDashboard()
   
   return (
     <div className="space-y-6">
@@ -20,6 +20,15 @@ export default function DashboardPage() {
         subtitle="Real-time health monitoring across my repos and pipelines"
         badge="LIVE"
       />
+      
+      {loading && (
+        <div className="flex items-center justify-center p-20 glass rounded-3xl animate-pulse">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin" />
+            <p className="text-gray-500 font-medium tracking-widest text-[10px] uppercase">Integrating Real-World Data...</p>
+          </div>
+        </div>
+      )}
 
       {/* Resilience Score Hero */}
       <div className="relative group">
@@ -29,28 +38,33 @@ export default function DashboardPage() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="space-y-4 max-w-lg">
               <div className="flex items-center gap-2">
-                <div className="px-2 py-1 bg-emerald-500/20 rounded border border-emerald-500/30 text-[10px] font-bold text-emerald-400 tracking-widest uppercase">
-                  Excellent Stability
+                <div className={`px-2 py-1 ${data?.pulse?.status === 'CRITICAL' ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30'} rounded border text-[10px] font-bold tracking-widest uppercase`}>
+                  {data?.pulse?.status ?? "Initializing..."}
                 </div>
-                <div className="text-[10px] text-gray-500 font-medium">Updated 30s ago</div>
+                <div className="text-[10px] text-gray-500 font-medium whitespace-nowrap">
+                  Updated {data?.pulse?.last_updated ? "just now" : "awaiting sync"}
+                </div>
               </div>
               <h2 className="text-3xl font-bold text-white tracking-tight">System Health Score</h2>
               <p className="text-sm text-gray-400 leading-relaxed">
-                The infra looks <span className="text-emerald-400 font-bold">solid</span> right now. 
-                Everything is stable even with the recent spike in PR activity.
+                {data?.pulse?.pulse_score && data.pulse.pulse_score > 85 
+                  ? "The infra looks solid right now. Everything is stable even with recent activity."
+                  : data?.pulse?.pulse_score && data.pulse.pulse_score > 65
+                  ? "System is stable with some caution required in recent changes."
+                  : "Critical health detected. Review high-risk activities immediately."}
               </p>
               <div className="flex items-center gap-6 pt-2">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                  <span className="text-xs text-gray-300">Security: Stable</span>
+                  <span className="text-xs text-gray-300">Stability: {data?.pulse?.metrics.stability ?? "—"}%</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Activity className="w-4 h-4 text-indigo-400" />
-                  <span className="text-xs text-gray-300">Throughput: High</span>
+                  <span className="text-xs text-gray-300">Recovery: {data?.pulse?.metrics.recovery ?? "—"}%</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Cpu className="w-4 h-4 text-amber-400" />
-                  <span className="text-xs text-gray-300">AI Trust: 98%</span>
+                  <span className="text-xs text-gray-300">Risk Control: {data?.pulse?.metrics.risk_control ?? "—"}%</span>
                 </div>
               </div>
             </div>
@@ -59,18 +73,18 @@ export default function DashboardPage() {
                 <circle cx="80" cy="80" r="70" className="stroke-white/5" strokeWidth="12" fill="none" />
                 <motion.circle 
                   cx="80" cy="80" r="70" 
-                  className="stroke-emerald-500" 
+                  className={data?.pulse?.pulse_score && data.pulse.pulse_score < 65 ? "stroke-red-500" : "stroke-emerald-500"} 
                   strokeWidth="12" 
                   fill="none" 
                   strokeDasharray="440"
                   initial={{ strokeDashoffset: 440 }}
-                  animate={{ strokeDashoffset: 440 - (440 * (data?.pulse?.pulse_score ?? 92) / 100) }}
+                  animate={{ strokeDashoffset: 440 - (440 * (data?.pulse?.pulse_score ?? 0) / 100) }}
                   transition={{ duration: 2, ease: "circOut" }}
                   strokeLinecap="round"
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold text-white tracking-tighter">{data?.pulse?.pulse_score ?? 92}</span>
+                <span className="text-4xl font-bold text-white tracking-tighter">{data?.pulse?.pulse_score ?? "—"}</span>
                 <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Score</span>
               </div>
             </div>
@@ -82,33 +96,33 @@ export default function DashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <MetricCard
           label="CI Success Rate"
-          value={`${data?.ci.success_rate ?? "—"}%`}
-          change="+2.3% vs last week"
-          changeType="positive"
+          value={data ? `${data.ci.success_rate}%` : "—"}
+          change={data ? "Real-time sync" : "Loading..."}
+          changeType="neutral"
           icon={CheckCircle}
           color="emerald"
         />
         <MetricCard
           label="Open Incidents"
-          value={data?.incidents.open ?? "—"}
-          change="3 high severity"
-          changeType="negative"
+          value={data ? data.incidents.open : "—"}
+          change={data?.incidents.open === 0 ? "System healthy" : "Requires attention"}
+          changeType={data?.incidents.open === 0 ? "positive" : "negative"}
           icon={AlertTriangle}
           color="red"
         />
         <MetricCard
-          label="Risky PRs"
-          value={data?.repos.high_risk ?? "—"}
-          change="Awaiting review"
+          label="Local Risk"
+          value={data ? Math.round(data.repos.avg_risk_score * 100) + "%" : "—"}
+          change="Aggregated risk"
           changeType="neutral"
           icon={GitPullRequest}
           color="amber"
         />
         <MetricCard
           label="Avg Build Time"
-          value={data ? `${Math.round((data.ci.avg_build_time_ms / 1000) / 60)}m` : "—"}
-          change="+18s anomaly detected"
-          changeType="negative"
+          value={data ? (data.ci.avg_build_time_ms > 0 ? `${Math.round(data.ci.avg_build_time_ms / 1000)}s` : "0s") : "—"}
+          change="Local execution"
+          changeType="neutral"
           icon={Zap}
           color="indigo"
         />
