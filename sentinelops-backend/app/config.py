@@ -6,8 +6,10 @@ from pydantic_settings import BaseSettings
 from typing import Optional
 
 class Settings(BaseSettings):
-    # Database
-    DATABASE_URL: str = "postgresql+asyncpg://postgres:password@localhost:5432/sentinelops"
+    # Database — defaults to local SQLite for zero-setup dev.
+    # Override in .env with PostgreSQL for production:
+    # DATABASE_URL=postgresql+asyncpg://postgres:password@localhost:5432/sentinelops
+    DATABASE_URL: str = "sqlite+aiosqlite:///./sentinelops.db"
     
     # Redis
     REDIS_URL: str = "redis://localhost:6379/0"
