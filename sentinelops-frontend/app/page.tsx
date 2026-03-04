@@ -107,8 +107,8 @@ export default function LandingPage() {
             },
             {
               icon: <Network className="w-6 h-6 text-indigo-400" />,
-              title: "Failure Similarity Search",
-              desc: "Vector-based search to find recurring incidents and link them to known resolutions.",
+              title: "Repo Manager & Sync",
+              desc: "Link local repos, auto-detect changes, run health checks, and push to GitHub — all from one dashboard.",
               glow: "group-hover:shadow-indigo-500/10"
             }
           ].map((feature, i) => (
