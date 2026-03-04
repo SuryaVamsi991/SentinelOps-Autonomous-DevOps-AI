@@ -40,6 +40,11 @@ export default function IncidentCard({ incident }: { incident: Incident }) {
               <span className={`text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-medium ${catStyle}`}>
                 {incident.error_category.toUpperCase()}
               </span>
+              {incident.root_cause.toLowerCase().includes("local") && (
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 tracking-tight uppercase">
+                  Local
+                </span>
+              )}
               <span className="text-xs text-gray-500 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
                 {Math.round((incident.llm_confidence ?? 0) * 100)}% confidence
