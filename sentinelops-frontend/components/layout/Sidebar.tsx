@@ -4,12 +4,12 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { 
   LayoutDashboard, GitPullRequest, AlertTriangle, 
-  BarChart3, GitBranch, Settings
+  BarChart3, FolderGit2, Settings
 } from "lucide-react"
 
 const navItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/repositories", label: "Risk Heatmap", icon: GitBranch },
+  { href: "/repositories", label: "Repo Manager", icon: FolderGit2 },
   { href: "/pull-requests", label: "PR Gatekeeper", icon: GitPullRequest },
   { href: "/incidents", label: "Incidents", icon: AlertTriangle },
   { href: "/analytics", label: "Analytics", icon: BarChart3 },
