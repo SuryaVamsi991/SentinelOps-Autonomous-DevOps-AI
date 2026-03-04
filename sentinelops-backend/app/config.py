@@ -24,6 +24,7 @@ class Settings(BaseSettings):
     SECRET_KEY: str = "sentinelops_dev_key"
     DEBUG: bool = True
     CORS_ORIGINS: list[str] = ["*"]
+    FRONTEND_URL: str = "http://localhost:3000"
     
     # ML Model
     MODEL_PATH: str = "app/ml/model.pkl"
