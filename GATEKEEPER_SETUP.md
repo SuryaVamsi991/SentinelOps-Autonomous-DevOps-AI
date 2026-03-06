@@ -6,7 +6,7 @@ SentinelOps can act as a hard "Pass/Fail" gate for your repository. By following
 
 Ensure your repository has a webhook pointing to your SentinelOps instance:
 
-- **Payload URL**: `https://your-sentinel-ops.com/api/v1/webhooks/github`
+- **Payload URL**: `https://your-sentinel-ops.com/api/webhooks/github`
 - **Content type**: `application/json`
 - **Events**: `Pull requests`, `Workflow runs`
 
