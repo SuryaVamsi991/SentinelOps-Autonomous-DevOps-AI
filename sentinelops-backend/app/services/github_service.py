@@ -5,8 +5,11 @@ Author: Arsh Verma
 from typing import Dict, List, Optional, Any
 import httpx
 import logging
+from app.config import settings
 
 logger = logging.getLogger(__name__)
+
+GITHUB_API_BASE = "https://api.github.com"
 
 class GitHubService:
     """Handles GitHub API calls with error handling and fallback logic."""
