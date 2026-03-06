@@ -95,7 +95,7 @@ GitHub Webhooks → FastAPI → Redis Queue → Celery Workers
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/sentinelops
+git clone https://github.com/ArshVermaGit/SentinelOps-Autonomous-DevOps-AI
 cd sentinelops
 ```
 
