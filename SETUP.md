@@ -36,7 +36,7 @@ Before you begin, ensure you have the following installed and running:
    ```bash
    cd ../sentinelops-frontend
    ```
-2. Create your `.env.local` file:
+2. Create your `.env.local` file from the example:
    ```bash
    cp .env.local.example .env.local
    ```
