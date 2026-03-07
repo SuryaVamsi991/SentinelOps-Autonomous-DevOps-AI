@@ -2,7 +2,7 @@
 GitHub API client - Wrapper for all my interactions with the GitHub API.
 Author: Arsh Verma
 """
-from typing import Dict, List, Optional, Any
+from typing import Any, Dict, List, Optional
 import httpx
 import logging
 from app.config import settings
@@ -61,7 +61,7 @@ class GitHubService:
             )
             r.raise_for_status()
             return r.json()
-    
+
     async def get_run_logs(self, repo: str, run_id: int) -> str:
         """
         Download CI run logs.
@@ -159,8 +159,8 @@ class GitHubService:
             except httpx.HTTPError as e:
                 logger.error(f"GitHub Status Error ({sha}): {e}")
                 return {}
-    
-    def format_pr_risk_comment(self, risk_data: dict) -> str:
+
+    def format_pr_risk_comment(self, risk_data: Dict[str, Any]) -> str:
         """Helper to format the PR risk analysis as a clean markdown comment."""
         emoji = "🟢" if risk_data["risk_level"] == "safe" else \
                 "🟡" if risk_data["risk_level"] == "caution" else "🔴"
