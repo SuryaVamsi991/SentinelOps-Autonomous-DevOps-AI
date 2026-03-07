@@ -2,9 +2,11 @@
 import pytest
 from app.services.risk_analyzer import RiskAnalyzer
 
+
 @pytest.fixture
 def analyzer():
     return RiskAnalyzer()
+
 
 def test_analyze_pr_safe(analyzer):
     pr_data = {
@@ -21,9 +23,10 @@ def test_analyze_pr_safe(analyzer):
         "failed_prs": 5,
         "avg_lines_changed": 50
     }
-    
+
     result = analyzer.analyze_pr(pr_data, author_stats)
     assert result["risk_level"] == "safe"
+
 
 def test_high_risk_pr():
     analyzer = RiskAnalyzer()
