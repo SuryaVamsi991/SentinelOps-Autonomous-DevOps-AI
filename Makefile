@@ -25,17 +25,17 @@ lint:
 	@echo "🔍 Linting Frontend..."
 	cd sentinelops-frontend && npm run lint
 	@echo "🔍 Linting Backend..."
-	cd sentinelops-backend && .venv/bin/python3 -m flake8 .
+	cd sentinelops-backend && ../.venv/bin/python3 -m flake8 .
 
 format:
 	@echo "🎨 Formatting Backend..."
-	cd sentinelops-backend && .venv/bin/python3 -m black . && .venv/bin/python3 -m isort .
+	cd sentinelops-backend && ../.venv/bin/python3 -m black . && ../.venv/bin/python3 -m isort .
 	@echo "🎨 Formatting Frontend..."
 	cd sentinelops-frontend && npx prettier --write .
 
 test:
 	@echo "🧪 Testing Backend..."
-	cd sentinelops-backend && .venv/bin/python3 -m pytest
+	cd sentinelops-backend && ../.venv/bin/python3 -m pytest
 	@echo "🧪 Testing Frontend..."
 	# Add frontend tests here if any exist
 
